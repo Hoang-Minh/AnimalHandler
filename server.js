@@ -16,8 +16,31 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyparser.urlencoded({ extended: true }))
 app.use(bodyparser.json())
 
-var animals = require("./allPets.js");
+//var animals = require("./allPets.js");
 
+// another way to work as well
+var animals = [
+  {
+    type: "dog",
+    pet: true,
+    fierceness: 2
+  },
+  {
+    type: "cat",
+    pet: true,
+    fierceness: 3
+  },
+  {
+    type: "lion",
+    pet: false,
+    fierceness: 8
+  },
+  {
+    type: "zebra",
+    pet: false,
+    fierceness: 6
+  }
+]
 
 // your code here...
 app.get('/', function (req, res) {
@@ -26,12 +49,12 @@ app.get('/', function (req, res) {
 
 // works
 app.get("/allpets", function(req, res){
-  res.render("allpets", {pets: animals});  
+  // res.render("allpets", {pets: animals});  // also works !!!! 
+  res.render("allpets", {animals});  // works
 })
 
 app.get("/:id", function(req, res){
-  //res.render("dog", {dog: animals[0]});
-  //console.log(animals[0]);
+  
   debugger;
   var type = req.params.id;
   //var index = animals.indexOf(type);
@@ -42,9 +65,7 @@ app.get("/:id", function(req, res){
       break;
     }
   }
-
-  res.render("animal", animals[index]);
-  // res.render("dog", animals[3]);res.render("dog", animals[index]);
+  res.render("animal", animals[index]);  // for handlebars, res.render needs to send in an object !!!!
 })
 
 var PORT = process.env.PORT || 3000
